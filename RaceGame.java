@@ -8,27 +8,25 @@ import java.util.Random;
  * @author Sejal Dua
  *
  */
-public class TicTacToe {
+public class RaceGame {
 	static Scanner in;
 	static String[] board;
 	static String turn;
 	static int curr;
 	static int mode;
+	static int size;
 
 	public static void main(String[] args) {
 		in = new Scanner(System.in);
-		board = new String[15];
 		turn = "X";
 		curr = 0;
 		String winner = null;
-		populateEmptyBoard();
-
 		System.out.println("Welcome to ~THE RACE GAME~.");
 		System.out.println("RULES:");
 		System.out.println("------");
 		System.out.println("Imagine that each move represents a ball sliding 1, 2, or 3 slots.");
 		System.out.println("The object of the game is for YOU to be the one to slide");
-		System.out.println("the ball to slot number 15. Best of luck!");
+		System.out.println("the ball into the very last slot. Best of luck!");
 		System.out.println("------");
 		System.out.println("How many players?");
 		System.out.println("\t1: you will play against an AI!");
@@ -46,15 +44,35 @@ public class TicTacToe {
 				in.next(); // consumes invalid token
 			}
 		}
+		System.out.println("Enter a game board size (between 9 and 21 please): ");
+		while (true) {
+			try {
+				size = in.nextInt();
+				if (!(size > 8 && size <=21)) {
+					System.out.println("Invalid input; re-enter size between 9 and 21: ");
+					continue;
+				}
+				break;
+			} catch (InputMismatchException e) {
+				System.out.println("Invalid input; re-enter size between 9 and 21: ");
+				in.next(); // consumes invalid token
+			}
+		}
+		board = new String[size];
+		populateEmptyBoard();
 		printBoard();
-		System.out.println("You get to go first.");
+		if (mode == 1) {
+			System.out.println("You get to go first.");
+		} else {
+			System.out.println(turn + " gets to go first.");
+		}
 
 		while (winner == null) {
 			if (mode == 2) {
 				int numInput;
 				try {
 					numInput = in.nextInt();
-					if (!(numInput > 0 && numInput <= 15)) {
+					if (!(numInput > 0 && numInput <= size)) {
 						System.out.println("Invalid input; re-enter slot number:");
 						continue;
 					}
@@ -94,7 +112,7 @@ public class TicTacToe {
 					int numInput;
 					try {
 						numInput = in.nextInt();
-						if (!(numInput > 0 && numInput <= 15)) {
+						if (!(numInput > 0 && numInput <= size)) {
 							System.out.println("Invalid input; re-enter slot number:");
 							continue;
 						}
@@ -153,9 +171,9 @@ public class TicTacToe {
 	}
 
 	static String checkWinner() {
-		if (board[14].equals("X")) {
+		if (board[size - 1].equals("X")) {
 			return "X";
-		} else if (board[14].equals("O")) {
+		} else if (board[size - 1].equals("O")) {
 			return "O";
 		}
 
@@ -174,14 +192,23 @@ public class TicTacToe {
 	}
 
 	static void printBoard() {
-		System.out.println("\\---|---|---|---|---|---|---|---|---|---|---|---|---|---|---/");
+		System.out.print("\\---");
+		for (int a = 0; a < size - 1; a++) {
+			System.out.print("|---");
+		};
+		System.out.println("/");
 		System.out.print("| ");
-		for (int a = 0; a < 15; a++) {
+		for (int a = 0; a < size; a++) {
 			System.out.print(board[a] + " | ");
 		}
-		System.out.println("\n/---|---|---|---|---|---|---|---|---|---|---|---|---|---|---\\");
+		System.out.println();
+		System.out.print("/---");
+		for (int a = 0; a < size - 1; a++) {
+			System.out.print("|---");
+		};
+		System.out.println("\\");
 		System.out.print("| ");
-		for (int a = 0; a < 15; a++) {
+		for (int a = 0; a < size; a++) {
 			if (a > 8) {
 				System.out.print(String.valueOf(a+1) + "| ");
 			}
@@ -193,27 +220,21 @@ public class TicTacToe {
 	}
 
 	static void populateEmptyBoard() {
-		for (int a = 0; a < 15; a++) {
+		for (int a = 0; a < size; a++) {
 			board[a] = ".";
 		}
 	}
 
 	static int smartMove() {
-		if (curr == 3 || curr == 7 || curr == 11) {
-			Random rand = new Random(); 
-			return (curr + rand.nextInt(3) + 1);
+		for (int a = 0; a < (size / 4) + 1; a++) {
+			if (curr == (size % 4) + (4*a)) {
+				Random rand = new Random(); 
+				return (curr + rand.nextInt(3) + 1);
+			}
+			else if (curr < (size % 4) + (4*a)) {
+				return (size % 4) + (4*a);
+			}
 		}
-		else if (curr < 3) {
-			return 3;
-		}
-		else if (curr < 7) {
-			return 7;
-		}
-		else if (curr < 11) {
-			return 11;
-		}
-		else {
-			return 15;
-		}
+		return 0;
 	}
 }
