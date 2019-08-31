@@ -4,6 +4,7 @@ A super simple console game with a basic arithmetic pattern. The structure for t
 ### Usage
 
 in Terminal (expand as needed):
+
 `git clone https://github.com/sejaldua/AI-race-game.git`
 
 `java RaceGame.java`
