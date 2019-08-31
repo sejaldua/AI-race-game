@@ -3,13 +3,17 @@ A super simple console game with a basic arithmetic pattern. The structure for t
 
 ### Usage
 `git clone `
+
 `java RaceGame.java`
+
 expand terminal as needed
 
 ### The Race Game
 
 Imagine that each move represents a ball sliding 1, 2, or 3 slots.
+
 The object of the game is for YOU to be the one to slide
+
 the ball to slot number 15. 
 
 NOTE: There is a pattern. Play the game over and over again until you find it.
